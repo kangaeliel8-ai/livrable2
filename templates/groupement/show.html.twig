@@ -1,0 +1,39 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}{{ groupement.nom }}{% endblock %}
+
+{% block body %}
+<nav class="crumbs"><a href="{{ path('app_groupement_index') }}">Groupements</a> › {{ groupement.nom }}</nav>
+<h1>{{ groupement.nom }} <span class="badge">{{ groupement.statut }}</span></h1>
+<p>{{ groupement.telephone }} · {{ groupement.adresse }}</p>
+
+{% if groupement.exerciceEnCours %}
+<div class="cards">
+    <div class="card">Exercice en cours<strong>{{ groupement.exerciceEnCours.dateDebut }} → {{ groupement.exerciceEnCours.dateFin }}</strong></div>
+    <div class="card">Date limite des prêts<strong>{{ groupement.exerciceEnCours.dateLimitePret }}</strong></div>
+    <div class="card">Date de rétribution<strong>{{ groupement.exerciceEnCours.dateRetribution }}</strong></div>
+</div>
+{% endif %}
+
+<h2>Campagnes</h2>
+<table>
+    <thead>
+        <tr><th>Nom</th><th>Type</th><th>Périodicité</th><th>Jour</th><th class="num">Montant fixe</th><th>Exercice</th><th></th></tr>
+    </thead>
+    <tbody>
+    {% for c in campagnes %}
+        <tr>
+            <td>{{ c.nom }}</td>
+            <td>{{ c.type }}</td>
+            <td>{{ c.periodicite }}</td>
+            <td>{{ c.jourRencontre }}</td>
+            <td class="num">{{ c.montantFixe|number_format(0, ',', ' ') }} FCFA</td>
+            <td>{{ c.exercice }}</td>
+            <td><a href="{{ path('app_campagne_show', {id: c.id}) }}">Détail</a></td>
+        </tr>
+    {% else %}
+        <tr><td colspan="7">Aucune campagne.</td></tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

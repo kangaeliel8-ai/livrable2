@@ -1,0 +1,31 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Séances · {{ campagne.nom }}{% endblock %}
+
+{% block body %}
+<nav class="crumbs">
+    <a href="{{ path('app_groupement_index') }}">Groupements</a> ›
+    <a href="{{ path('app_groupement_show', {id: campagne.groupementId}) }}">{{ campagne.groupementNom }}</a> ›
+    <a href="{{ path('app_campagne_show', {id: campagne.id}) }}">{{ campagne.nom }}</a> › Séances
+</nav>
+<h1>{{ campagne.nom }} : séances</h1>
+<table>
+    <thead>
+        <tr><th>N°</th><th>Date</th><th class="num">Total collecté</th><th class="num">Caisse sociale</th><th class="num">Amendes</th><th></th></tr>
+    </thead>
+    <tbody>
+    {% for s in seances %}
+        <tr>
+            <td>{{ s.numero }}</td>
+            <td>{{ s.date }}</td>
+            <td class="num">{{ s.totalCollecte|number_format(0, ',', ' ') }} FCFA</td>
+            <td class="num">{{ s.totalCaisse|number_format(0, ',', ' ') }} FCFA</td>
+            <td class="num">{{ s.totalAmendes|number_format(0, ',', ' ') }} FCFA</td>
+            <td><a href="{{ path('app_seance_show', {id: s.id}) }}">Voir</a></td>
+        </tr>
+    {% else %}
+        <tr><td colspan="6">Aucune séance.</td></tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

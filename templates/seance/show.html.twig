@@ -1,0 +1,64 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Séance {{ seance.numero }}{% endblock %}
+
+{% block body %}
+<nav class="crumbs">
+    <a href="{{ path('app_groupement_index') }}">Groupements</a> ›
+    <a href="{{ path('app_campagne_seances', {id: seance.campagneId}) }}">{{ seance.campagneNom }} : séances</a> ›
+    Séance {{ seance.numero }}
+</nav>
+<h1>Séance n°{{ seance.numero }} · {{ seance.date }}</h1>
+
+<div class="cards">
+    <div class="card">Total collecté<strong>{{ seance.totalCollecte|number_format(0, ',', ' ') }} FCFA</strong></div>
+    <div class="card">Caisse sociale<strong>{{ seance.totalCaisse|number_format(0, ',', ' ') }} FCFA</strong></div>
+    <div class="card">Amendes<strong>{{ seance.totalAmendes|number_format(0, ',', ' ') }} FCFA</strong></div>
+</div>
+
+<h2>Cotisations</h2>
+<table>
+    <thead>
+        <tr><th>Membre</th><th>Présence</th><th class="num">Épargne</th><th class="num">Caisse</th></tr>
+    </thead>
+    <tbody>
+    {% for c in seance.cotisations %}
+        <tr>
+            <td>{{ c.membre }}</td>
+            <td>{{ c.presence }}</td>
+            <td class="num">{{ c.montantEpargne|number_format(0, ',', ' ') }}</td>
+            <td class="num">{{ c.montantCaisse|number_format(0, ',', ' ') }}</td>
+        </tr>
+    {% else %}
+        <tr><td colspan="4">Aucune cotisation.</td></tr>
+    {% endfor %}
+    </tbody>
+    <tfoot>
+        <tr><td colspan="2">Total</td>
+            <td class="num">{{ seance.totalCollecte|number_format(0, ',', ' ') }}</td>
+            <td class="num">{{ seance.totalCaisse|number_format(0, ',', ' ') }}</td></tr>
+    </tfoot>
+</table>
+
+<h2>Amendes</h2>
+<table>
+    <thead>
+        <tr><th>Membre</th><th class="num">Jours</th><th class="num">Montant</th><th>Statut</th></tr>
+    </thead>
+    <tbody>
+    {% for a in seance.amendes %}
+        <tr>
+            <td>{{ a.membre }}</td>
+            <td class="num">{{ a.nombreJours }}</td>
+            <td class="num">{{ a.montant|number_format(0, ',', ' ') }} FCFA</td>
+            <td>{{ a.statut }}</td>
+        </tr>
+    {% else %}
+        <tr><td colspan="4">Aucune amende.</td></tr>
+    {% endfor %}
+    </tbody>
+    <tfoot>
+        <tr><td colspan="2">Total</td><td class="num">{{ seance.totalAmendes|number_format(0, ',', ' ') }} FCFA</td><td></td></tr>
+    </tfoot>
+</table>
+{% endblock %}

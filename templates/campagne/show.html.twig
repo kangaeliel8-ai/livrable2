@@ -1,0 +1,33 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}{{ campagne.nom }}{% endblock %}
+
+{% block body %}
+<nav class="crumbs">
+    <a href="{{ path('app_groupement_index') }}">Groupements</a> ›
+    <a href="{{ path('app_groupement_show', {id: campagne.groupementId}) }}">{{ campagne.groupementNom }}</a> ›
+    {{ campagne.nom }}
+</nav>
+<h1>{{ campagne.nom }}</h1>
+<p>{{ campagne.type }} · {{ campagne.periodicite }} · {{ campagne.jourRencontre }} · exercice {{ campagne.exercice }}</p>
+<p><a href="{{ path('app_campagne_seances', {id: campagne.id}) }}">→ Voir les séances, cotisations et amendes</a></p>
+
+<h2>Membres ({{ membres|length }})</h2>
+<table>
+    <thead>
+        <tr><th>Nom</th><th>Téléphone</th><th>Mode</th><th class="num">Montant engagé</th></tr>
+    </thead>
+    <tbody>
+    {% for m in membres %}
+        <tr>
+            <td>{{ m.nomComplet }}</td>
+            <td>{{ m.telephone }}</td>
+            <td>{{ m.mode }}</td>
+            <td class="num">{{ m.montantEngage is not null ? m.montantEngage|number_format(0, ',', ' ') ~ ' FCFA' : '—' }}</td>
+        </tr>
+    {% else %}
+        <tr><td colspan="4">Aucun membre.</td></tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
